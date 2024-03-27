@@ -17,6 +17,7 @@
     "framer-motion": "^11.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "sweetalert2": "^11.10.7",
     "vite-plugin-php": "^1.0.10"
   },
   "devDependencies": {
