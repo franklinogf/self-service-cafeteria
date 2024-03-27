@@ -1,13 +1,30 @@
 import { Badge, Box, Button, Flex, Heading, Spacer, Text, VStack } from '@chakra-ui/react'
 import { CartItem } from './CartItem'
 import { IconBasket } from '@tabler/icons-react'
+import Swal from 'sweetalert2'
 
 export function CartBasket ({ items, onItemRemove }) {
   const total = items
     .reduce((sum, item) => {
       return sum + item.price
     }, 0)
-    .toFixed(2)
+
+  const handlerOrderClick = () => {
+    Swal.fire({
+      title: 'Desea proceder con la compra?',
+      text: `Se le descontara $${total} de su cuenta`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--chakra-colors-blue-500)',
+      confirmButtonText: 'Confirmar',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      // if (result.isConfirmed) {
+
+      // }
+    })
+  }
   return (
     <Box>
       <Flex alignItems={'center'}>
@@ -49,10 +66,12 @@ export function CartBasket ({ items, onItemRemove }) {
       </Box>
       <Box mt={2}>
         <Button
+        isDisabled={total === 0}
+        onClick={handlerOrderClick}
           colorScheme='blue'
           w={'100%'}
         >
-          Pagar
+          Ordernar
         </Button>
       </Box>
     </Box>
