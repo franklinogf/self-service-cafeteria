@@ -12,7 +12,9 @@ import {
   HStack,
   PinInput,
   PinInputField,
-  VStack
+  VStack,
+  Text,
+  Image
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useStudent } from '../hooks/useStudent'
@@ -51,65 +53,92 @@ export function IdentificationForm () {
         size={'sm'}
         w={[600]}
       >
-        <CardHeader>
-          <Heading
-            textAlign={'center'}
-            as='h1'
-          >
-            {student ? 'Entra tu pin' : 'Identificate'}
-          </Heading>
-        </CardHeader>
         {!student && (
-          <form onSubmit={handleSubmit}>
-            <CardBody>
-              <FormControl isInvalid={error}>
-                <Input
-                defaultValue={120113675}
-                  autoFocus
-                  autoComplete='off'
-                  name='barCode'
-                  variant={'filled'}
-                  type='text'
-                />
-                <FormErrorMessage>No debe de dejarlo vacio</FormErrorMessage>
-              </FormControl>
-            </CardBody>
-            <CardFooter>
-              <Button
-                mx={'auto'}
-                type='submit'
-                colorScheme='blue'
+          <>
+            <CardHeader>
+              <Heading
+                textAlign={'center'}
+                as='h1'
               >
-                Continuar
-              </Button>
-            </CardFooter>
-          </form>
+                Identificate
+              </Heading>
+            </CardHeader>
+
+            <form onSubmit={handleSubmit}>
+              <CardBody>
+                <FormControl isInvalid={error}>
+                  <Input
+                    defaultValue={120113675}
+                    autoFocus
+                    autoComplete='off'
+                    name='barCode'
+                    variant={'filled'}
+                    type='text'
+                  />
+                  <FormErrorMessage>No debe de dejarlo vacio</FormErrorMessage>
+                </FormControl>
+              </CardBody>
+              <CardFooter>
+                <Button
+                  mx={'auto'}
+                  type='submit'
+                  colorScheme='blue'
+                >
+                  Continuar
+                </Button>
+              </CardFooter>
+            </form>
+          </>
         )}
         {student && (
-          <CardBody>
-            <FormControl isInvalid={error}>
-              <Center>
-                <VStack>
-                  <HStack>
-                    <PinInput
-                    value={pin}
-                    onChange={(value) => setPin(value)}
-                      mask
-                      autoFocus
-                      otp
-                      onComplete={(value) => handlePinComplete(value)}
-                    >
-                      <PinInputField ref={firstPinInput} />
-                      <PinInputField />
-                      <PinInputField />
-                      <PinInputField />
-                    </PinInput>
-                  </HStack>
-                  <FormErrorMessage>Pin incorrecto</FormErrorMessage>
-                </VStack>
-              </Center>
-            </FormControl>
-          </CardBody>
+          <>
+            <CardHeader>
+              <Heading
+                textAlign={'center'}
+                as='h1'
+              >
+                Entra tu pin
+              </Heading>
+              <Text
+                textAlign={'center'}
+                fontSize={'lg'}
+                opacity={0.7}
+              >
+                {student.name}
+              </Text>
+              <Image
+                mx={'auto'}
+                src={student.profilePictureUrl}
+                mt={2}
+                boxSize={100}
+                alt={student.name}
+              />
+            </CardHeader>
+            <CardBody>
+              <FormControl isInvalid={error}>
+                <Center>
+                  <VStack>
+                    <HStack>
+                      <PinInput
+                        value={pin}
+                        onChange={(value) => setPin(value)}
+                        mask
+                        autoFocus
+                        otp
+                        onComplete={(value) => handlePinComplete(value)}
+                      >
+                        <PinInputField ref={firstPinInput} />
+                        <PinInputField />
+                        <PinInputField />
+                        <PinInputField />
+                      </PinInput>
+                    </HStack>
+                    <FormErrorMessage>Pin incorrecto</FormErrorMessage>
+                  </VStack>
+                </Center>
+              </FormControl>
+            </CardBody>
+          </>
         )}
       </Card>
     </Center>
