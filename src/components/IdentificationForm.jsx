@@ -14,28 +14,32 @@ import {
   PinInputField,
   VStack
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useStudent } from '../hooks/useStudent'
 
 export function IdentificationForm () {
   const { student, login, confirmPin } = useStudent()
   const [error, setError] = useState(false)
+  const [pin, setPin] = useState('')
+  const firstPinInput = useRef()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = new FormData(e.target)
-    const id = form.get('id')
-    if (id === '') {
+    const barCode = form.get('barCode')
+    if (barCode === '') {
       setError(true)
       return
     }
-    login({ barCode: '123456' })
+    login({ barCode })
     setError(false)
   }
 
-  const handlePinComplete = () => {
-    confirmPin({ pinCode: '1234' })
-    setError(false)
+  const handlePinComplete = (pinCode) => {
+    const confirmed = confirmPin({ pinCode })
+    setError(!confirmed)
+    setPin('')
+    firstPinInput.current.focus()
   }
 
   return (
@@ -60,9 +64,10 @@ export function IdentificationForm () {
             <CardBody>
               <FormControl isInvalid={error}>
                 <Input
-                 autoFocus
-                autoComplete='off'
-                  name='id'
+                defaultValue={120113675}
+                  autoFocus
+                  autoComplete='off'
+                  name='barCode'
                   variant={'filled'}
                   type='text'
                 />
@@ -87,11 +92,14 @@ export function IdentificationForm () {
                 <VStack>
                   <HStack>
                     <PinInput
-                    autoFocus
+                    value={pin}
+                    onChange={(value) => setPin(value)}
+                      mask
+                      autoFocus
                       otp
-                      onComplete={handlePinComplete}
+                      onComplete={(value) => handlePinComplete(value)}
                     >
-                      <PinInputField />
+                      <PinInputField ref={firstPinInput} />
                       <PinInputField />
                       <PinInputField />
                       <PinInputField />

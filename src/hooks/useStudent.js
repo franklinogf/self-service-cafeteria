@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { StudentContext } from '../context/StudentContext'
+import { SCHOOLSOFT_STUDENTS_API_URL } from '../constants/school'
 
 export function useStudent () {
   const { student, setStudent, pinConfirmed, setPinConfirmed } = useContext(StudentContext)
@@ -11,11 +12,22 @@ export function useStudent () {
 
   const login = ({ barCode }) => {
     // 120113675
-    setStudent({ name: 'Franklin Gonzalez' })
+
+    fetch(`${SCHOOLSOFT_STUDENTS_API_URL}?barcode=${barCode}`)
+      .then(data => data.json())
+      .then(json => {
+        setStudent(json)
+      })
   }
 
   const confirmPin = ({ pinCode }) => {
+    console.log({ student, pinCode })
+    if (student.pinCode !== pinCode) {
+      setPinConfirmed(false)
+      return false
+    }
     setPinConfirmed(true)
+    return true
   }
 
   return {
