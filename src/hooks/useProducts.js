@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { SCHOOLSOFT_API_URL } from '../constants/school'
-
-const SCHOOLSOFT_BUTTONS_API_URL = `${SCHOOLSOFT_API_URL}/buttons.php`
+import { SCHOOLSOFT_BUTTONS_API_URL } from '../constants/school'
 
 export const useProducts = () => {
   const [products, setProducts] = useState([])
