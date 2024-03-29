@@ -110,7 +110,7 @@ export function IdentificationForm () {
               <Image
                 mx={'auto'}
                 src={student.profilePictureUrl}
-                mt={2}
+                my={2}
                 boxSize={100}
                 alt={student.name}
               />
