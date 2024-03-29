@@ -2,8 +2,10 @@ import { Badge, Box, Button, Flex, Heading, Spacer, Text, VStack } from '@chakra
 import { CartItem } from './CartItem'
 import { IconBasket } from '@tabler/icons-react'
 import Swal from 'sweetalert2'
+import { useShoppingCart } from '../hooks/useShoppingCart'
 
 export function CartBasket ({ items, onItemRemove }) {
+  const { resetShoppingCart } = useShoppingCart()
   const total = items
     .reduce((sum, item) => {
       return sum + item.price
@@ -12,7 +14,7 @@ export function CartBasket ({ items, onItemRemove }) {
   const handlerOrderClick = () => {
     Swal.fire({
       title: 'Desea proceder con la compra?',
-      text: `Se le descontara $${total} de su cuenta`,
+      text: `Se le descontara $${total.toFixed(2)} de su cuenta`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'var(--chakra-colors-blue-500)',
@@ -20,13 +22,13 @@ export function CartBasket ({ items, onItemRemove }) {
       allowOutsideClick: false,
       allowEscapeKey: false
     }).then((result) => {
-      // if (result.isConfirmed) {
-
-      // }
+      if (result.isConfirmed) {
+        resetShoppingCart()
+      }
     })
   }
   return (
-    <Box>
+    <Box className='backdrop-blur'>
       <Flex alignItems={'center'}>
         <Heading
           as={'h2'}
@@ -61,7 +63,7 @@ export function CartBasket ({ items, onItemRemove }) {
         >
           <span>Total:</span>
           <Spacer />
-          <span className='font-bold'>${total}</span>
+          <span className='font-bold'>${total.toFixed(2)}</span>
         </Text>
       </Box>
       <Box mt={2}>

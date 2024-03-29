@@ -15,8 +15,10 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useShoppingCart } from '../hooks/useShoppingCart'
 
-export function IdentificationForm ({ onPinConfirmed, setStudent, student }) {
+export function IdentificationForm () {
+  const { student, setStudent, setIsConfirmed } = useShoppingCart()
   const [error, setError] = useState(false)
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -30,7 +32,7 @@ export function IdentificationForm ({ onPinConfirmed, setStudent, student }) {
     setStudent({ id, name: 'Franklin Gonzalez' })
   }
   const handlePinComplete = () => {
-    onPinConfirmed(true)
+    setIsConfirmed(true)
     setError(false)
   }
   return (
@@ -55,6 +57,7 @@ export function IdentificationForm ({ onPinConfirmed, setStudent, student }) {
             <CardBody>
               <FormControl isInvalid={error}>
                 <Input
+                 autoFocus
                 autoComplete='off'
                   name='id'
                   variant={'filled'}
@@ -81,6 +84,7 @@ export function IdentificationForm ({ onPinConfirmed, setStudent, student }) {
                 <VStack>
                   <HStack>
                     <PinInput
+                    autoFocus
                       otp
                       onComplete={handlePinComplete}
                     >

@@ -2,9 +2,13 @@ import { Box, Center, Flex, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { CartProducts } from './CartProducts'
 import { CartBasket } from './CartBasket'
+import { useShoppingCart } from '../hooks/useShoppingCart'
+import { useProducts } from '../hooks/useProducts'
 
-export function ShoppingCart ({ student, products }) {
+export function ShoppingCart () {
   const [cart, setCart] = useState([])
+  const { student } = useShoppingCart()
+  const { products } = useProducts()
 
   function handleProductClick (id) {
     const item = products.find((product) => product.id === id)
