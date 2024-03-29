@@ -12,7 +12,6 @@ import {
   HStack,
   PinInput,
   PinInputField,
-  VStack,
   Text,
   Image
 } from '@chakra-ui/react'
@@ -20,7 +19,7 @@ import { useRef, useState } from 'react'
 import { useStudent } from '../hooks/useStudent'
 
 export function IdentificationForm () {
-  const { student, login, confirmPin } = useStudent()
+  const { student, login, confirmPin, resetStudent } = useStudent()
   const [error, setError] = useState(false)
   const [pin, setPin] = useState('')
   const firstPinInput = useRef()
@@ -101,7 +100,7 @@ export function IdentificationForm () {
               </Heading>
             </CardHeader>
             <CardBody>
-            <Text
+              <Text
                 textAlign={'center'}
                 fontSize={'lg'}
                 opacity={0.7}
@@ -116,8 +115,7 @@ export function IdentificationForm () {
                 alt={student.name}
               />
               <FormControl isInvalid={error}>
-                <Center>
-                  <VStack>
+                <Center flexDirection={'column'} gap={0}>
                     <HStack>
                       <PinInput
                         value={pin}
@@ -133,11 +131,19 @@ export function IdentificationForm () {
                         <PinInputField />
                       </PinInput>
                     </HStack>
-                    <FormErrorMessage>Pin incorrecto</FormErrorMessage>
-                  </VStack>
+                    <FormErrorMessage mt={0}>Pin incorrecto</FormErrorMessage>
                 </Center>
               </FormControl>
             </CardBody>
+            <CardFooter>
+              <Button
+              onClick={() => resetStudent()}
+                mx={'auto'}
+                colorScheme='gray'
+              >
+                Cancelar
+              </Button>
+            </CardFooter>
           </>
         )}
       </Card>
