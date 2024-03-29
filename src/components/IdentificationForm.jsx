@@ -15,11 +15,12 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { useShoppingCart } from '../hooks/useShoppingCart'
+import { useStudent } from '../hooks/useStudent'
 
 export function IdentificationForm () {
-  const { student, setStudent, setIsConfirmed } = useShoppingCart()
+  const { student, login, confirmPin } = useStudent()
   const [error, setError] = useState(false)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = new FormData(e.target)
@@ -28,13 +29,15 @@ export function IdentificationForm () {
       setError(true)
       return
     }
+    login({ barCode: '123456' })
     setError(false)
-    setStudent({ id, name: 'Franklin Gonzalez' })
   }
+
   const handlePinComplete = () => {
-    setIsConfirmed(true)
+    confirmPin({ pinCode: '1234' })
     setError(false)
   }
+
   return (
     <Center
       as='main'

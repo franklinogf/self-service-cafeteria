@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
+import { SCHOOLSOFT_API_URL } from '../constants/school'
 
-const SCHOOL_ACRONYNM = window.location.pathname.split('/')[1] || 'demo'
-const SCHOOL_SOFT_API_URL = `https://www.schoolsoftpr.org/${SCHOOL_ACRONYNM}/cafeteria/self-service/requests/buttons.php`
+const SCHOOLSOFT_BUTTONS_API_URL = `${SCHOOLSOFT_API_URL}/buttons.php`
 
 export const useProducts = () => {
   const [products, setProducts] = useState([])
   useEffect(() => {
-    fetch(SCHOOL_SOFT_API_URL).then(data => data.json()).then(json => {
+    fetch(SCHOOLSOFT_BUTTONS_API_URL).then(data => data.json()).then(json => {
       setProducts(json)
     })
   }, [])

@@ -2,15 +2,15 @@ import { Box, Center, Flex, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { CartProducts } from './CartProducts'
 import { CartBasket } from './CartBasket'
-import { useShoppingCart } from '../hooks/useShoppingCart'
 import { useProducts } from '../hooks/useProducts'
+import { useStudent } from '../hooks/useStudent'
 
 export function ShoppingCart () {
   const [cart, setCart] = useState([])
-  const { student } = useShoppingCart()
+  const { student } = useStudent()
   const { products } = useProducts()
 
-  function handleProductClick (id) {
+  function handleAddProduct (id) {
     const item = products.find((product) => product.id === id)
     const newItem = { ...item, id: crypto.randomUUID() }
     setCart((prevState) => {
@@ -36,7 +36,7 @@ export function ShoppingCart () {
         <Box>
           <CartProducts
             products={products}
-            onProductClick={handleProductClick}
+            onProductClick={handleAddProduct}
           />
         </Box>
 

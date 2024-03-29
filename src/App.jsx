@@ -2,15 +2,17 @@ import { IdentificationForm } from './components/IdentificationForm'
 import { ShoppingCart } from './components/ShoppingCart'
 import { useShoppingCart } from './hooks/useShoppingCart'
 import { ShoppinCompleted } from './components/ShoppingCompleted'
+import { useStudent } from './hooks/useStudent'
 
 function App () {
-  const { isConfirmed, doneShopping } = useShoppingCart()
+  const { doneShopping } = useShoppingCart()
+  const { pinConfirmed } = useStudent()
 
   if (doneShopping) {
     return <ShoppinCompleted/>
   }
 
-  if (isConfirmed) return <ShoppingCart/>
+  if (pinConfirmed) return <ShoppingCart/>
 
   return <IdentificationForm/>
 }

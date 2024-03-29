@@ -28,7 +28,7 @@ export function CartBasket ({ items, onItemRemove }) {
     })
   }
   return (
-    <Box className='backdrop-blur'>
+    <Box position={'sticky'} top={'10px'}>
       <Flex alignItems={'center'}>
         <Heading
           as={'h2'}

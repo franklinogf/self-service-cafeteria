@@ -1,15 +1,16 @@
 import { useContext } from 'react'
 import { ShoppingCartContext } from '../context/ShoppingCartContext'
+import { useStudent } from './useStudent'
 
 export function useShoppingCart () {
-  const { student, setStudent, isConfirmed, setIsConfirmed, doneShopping, setDoneShopping } = useContext(ShoppingCartContext)
+  const { resetStudent } = useStudent()
+  const { doneShopping, setDoneShopping } = useContext(ShoppingCartContext)
   const resetShoppingCart = () => {
     setDoneShopping(true)
-    setStudent(null)
-    setIsConfirmed(false)
+    resetStudent()
     setTimeout(() => {
       setDoneShopping(false)
     }, 5000)
   }
-  return { student, setStudent, isConfirmed, setIsConfirmed, resetShoppingCart, doneShopping, setDoneShopping }
+  return { resetShoppingCart, doneShopping, setDoneShopping }
 }

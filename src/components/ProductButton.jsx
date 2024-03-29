@@ -1,23 +1,29 @@
-import { Button, Text } from '@chakra-ui/react'
+import { Button, Text, Image } from '@chakra-ui/react'
 
 export function ProductButton ({ label, imageUrl, price, onClick }) {
   return (
         <Button
             w={'100%'}
             onClick={onClick}
-            display={'grid'}
+            display={'flex'}
+            flexDir={'column'}
             gap={2}
             colorScheme='gray'
-            bg={'gray.300'}
+            shadow={'md'}
             h={'100%'}
             p={2}
         >
-            <img
-                width={100}
-                height={100}
+
+            <Image
+                shadow={'md'}
+                mx={'auto'}
+                boxSize={100}
                 src={imageUrl}
+                alt={label}
+
             />
-            <Text fontSize={'sm'} className='text-wrap'>{label}</Text>
+
+            <Text flex={1} maxW={'150px'} fontSize={'sm'} color={'gray.500'} className='text-wrap'>{label}</Text>
             <Text fontWeight={'bold'}>${price}</Text>
         </Button>
   )
