@@ -99,7 +99,9 @@ export function IdentificationForm () {
               >
                 Entra tu pin
               </Heading>
-              <Text
+            </CardHeader>
+            <CardBody>
+            <Text
                 textAlign={'center'}
                 fontSize={'lg'}
                 opacity={0.7}
@@ -113,8 +115,6 @@ export function IdentificationForm () {
                 boxSize={100}
                 alt={student.name}
               />
-            </CardHeader>
-            <CardBody>
               <FormControl isInvalid={error}>
                 <Center>
                   <VStack>
