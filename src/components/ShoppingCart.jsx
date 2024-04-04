@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading } from '@chakra-ui/react'
+import { Badge, Box, Center, Flex, Heading, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { CartProducts } from './CartProducts'
 import { CartBasket } from './CartBasket'
@@ -10,16 +10,16 @@ export function ShoppingCart () {
   const { student } = useStudent()
   const { products } = useProducts()
 
-  function handleAddProduct (id) {
+  function handleAddProduct (id, price) {
     const item = products.find((product) => product.id === id)
-    const newItem = { ...item, id: crypto.randomUUID() }
+    const newItem = { id: item.id, label: item.label, price, listId: crypto.randomUUID() }
     setCart((prevState) => {
       return [...prevState, newItem]
     })
   }
   function handleRemoveProductFromCart (id) {
     setCart((prevState) => {
-      const newCart = prevState.filter((item) => item.id !== id)
+      const newCart = prevState.filter((item) => item.listId !== id)
       return newCart
     })
   }
@@ -31,10 +31,19 @@ export function ShoppingCart () {
       minH={'100vh'}
       flexDirection={'column'}
     >
-      <Heading mb={2}>{student.name}</Heading>
+      <Box as="section" my={10}>
+        <Heading>{student.name}</Heading>
+        <Flex justifyContent="center" gap={1}>
+          <Text fontWeight="semibold" opacity={0.8}>Cantidad disponible:</Text>
+          <div>
+            <Badge colorScheme='blue'>{student.depositAmount}</Badge>
+          </div>
+        </Flex>
+      </Box>
       <Flex gap={4}>
         <Box>
           <CartProducts
+            withDiscount={student.hasDiscount}
             products={products}
             onProductClick={handleAddProduct}
           />
