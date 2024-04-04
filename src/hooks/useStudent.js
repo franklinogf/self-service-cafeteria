@@ -21,7 +21,6 @@ export function useStudent () {
   }
 
   const confirmPin = ({ pinCode }) => {
-    console.log({ student, pinCode })
     if (student.pinCode !== pinCode) {
       setPinConfirmed(false)
       return false
