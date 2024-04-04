@@ -13,15 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     $result = mysql_fetch_object(mysql_query("SELECT * FROM `year` WHERE cbarra = '$barCode' AND `year` = '$year' limit 1"));
-    $student = [
-        "id" => (int) $result->mt,
-        "name" => $result->nombre,
-        "lastName" => utf8_encode($result->apellidos),
-        "depositAmount" => (float) $result->cantidad,
-        "profilePictureUrl" => $result->tipo ? "../../picture/{$result->tipo}.jpg" : null,
-        "pinCode" => $result->codigopin,
-        "hasDiscount" => strtolower($result->hde) === 'si'
-    ];
+    if($result){
+        $student = [
+            "id" => (int) $result->mt,
+            "name" => $result->nombre,
+            "lastName" => utf8_encode($result->apellidos),
+            "depositAmount" => (float) $result->cantidad,
+            "profilePictureUrl" => $result->tipo ? "../../picture/{$result->tipo}.jpg" : null,
+            "pinCode" => $result->codigopin,
+            "hasDiscount" => strtolower($result->hde) === 'si'
+        ];
+    }
+    
     echo json_encode($student, JSON_UNESCAPED_UNICODE);
 
 
