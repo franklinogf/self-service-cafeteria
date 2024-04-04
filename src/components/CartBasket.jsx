@@ -67,12 +67,12 @@ export function CartBasket ({ items, onItemRemove }) {
         mt={2}
         gap={0}
       >
-        {items.map(({ label, price, listId }) => (
+        {items.map(({ label, price, id }) => (
           <CartItem
-            key={listId}
+            key={id}
             label={label}
             price={price}
-            onRemove={() => onItemRemove(listId)}
+            onRemove={() => onItemRemove(id)}
           />
         ))}
       </VStack>

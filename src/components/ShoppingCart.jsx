@@ -11,15 +11,17 @@ export function ShoppingCart () {
   const { products } = useProducts()
 
   function handleAddProduct (id, price) {
+    const productInCart = cart.find(product => product.id === id)
+    if (productInCart) return
     const item = products.find((product) => product.id === id)
-    const newItem = { id: item.id, label: item.label, price, listId: crypto.randomUUID() }
+    const newItem = { id: item.id, label: item.label, price }
     setCart((prevState) => {
       return [...prevState, newItem]
     })
   }
   function handleRemoveProductFromCart (id) {
     setCart((prevState) => {
-      const newCart = prevState.filter((item) => item.listId !== id)
+      const newCart = prevState.filter((item) => item.id !== id)
       return newCart
     })
   }
