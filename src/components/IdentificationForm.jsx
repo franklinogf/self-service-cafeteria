@@ -67,7 +67,6 @@ export function IdentificationForm () {
               <CardBody>
                 <FormControl isInvalid={error}>
                   <Input
-                    defaultValue={120113675}
                     autoFocus
                     autoComplete='off'
                     name='barCode'
