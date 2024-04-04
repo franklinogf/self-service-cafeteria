@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         "depositAmount" => (float) $result->cantidad,
         "profilePictureUrl" => $result->tipo ? "../../picture/{$result->tipo}.jpg" : null,
         "pinCode" => $result->codigopin,
+        "hasDiscount" => strtolower($result->hde) === 'si'
     ];
     echo json_encode($student, JSON_UNESCAPED_UNICODE);
 

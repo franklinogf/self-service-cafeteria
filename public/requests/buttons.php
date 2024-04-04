@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       "imageUrl" => isset($row->foto) ? "../../../cafeteria_im/$row->foto" : "../../../cafeteria_im/no-image.png",
       "label" => $row->articulo,
       "price" => (float) $row->precio,
+      "discountedPrice" => (float) $row->precio_descuento
     ];
   }
   echo json_encode($foods, JSON_UNESCAPED_UNICODE);
