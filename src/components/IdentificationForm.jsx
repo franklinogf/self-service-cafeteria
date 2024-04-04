@@ -19,20 +19,23 @@ import { useRef, useState } from 'react'
 import { useStudent } from '../hooks/useStudent'
 
 export function IdentificationForm () {
+  const [loginError, setLoginError] = useState(false)
   const { student, login, confirmPin, resetStudent } = useStudent()
   const [error, setError] = useState(false)
   const [pin, setPin] = useState('')
   const firstPinInput = useRef()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoginError(false)
     const form = new FormData(e.target)
     const barCode = form.get('barCode')
     if (barCode === '') {
       setError(true)
       return
     }
-    login({ barCode })
+    const logged = await login({ barCode })
+    if (!logged) return setLoginError(true)
     setError(false)
   }
 
@@ -65,15 +68,15 @@ export function IdentificationForm () {
 
             <form onSubmit={handleSubmit}>
               <CardBody>
-                <FormControl isInvalid={error}>
+                <FormControl isInvalid={error || loginError}>
                   <Input
                     autoFocus
                     autoComplete='off'
                     name='barCode'
                     variant={'filled'}
-                    type='text'
+                    type='number'
                   />
-                  <FormErrorMessage>No debe de dejarlo vacio</FormErrorMessage>
+                  <FormErrorMessage>{loginError ? 'Hubo un error con el codigo de barra' : 'No debe de dejarlo vacio'}</FormErrorMessage>
                 </FormControl>
               </CardBody>
               <CardFooter>
@@ -106,13 +109,15 @@ export function IdentificationForm () {
               >
                 {student.name}
               </Text>
-              <Image
-                mx={'auto'}
-                src={student.profilePictureUrl}
-                my={2}
-                boxSize={100}
-                alt={student.name}
-              />
+              {student.profilePictureUrl && (
+                <Image
+                  mx={'auto'}
+                  src={student.profilePictureUrl}
+                  my={2}
+                  boxSize={100}
+                  alt={student.name}
+                />
+              )}
               <FormControl isInvalid={error}>
                 <Center flexDirection={'column'} gap={0}>
                     <HStack>
