@@ -12,7 +12,7 @@ export function CartBasket ({ items, onItemRemove }) {
     .reduce((sum, item) => {
       return sum + item.price
     }, 0)
-  const handlerOrderClick = () => {
+  const handleOrderClick = () => {
     Swal.fire({
       title: 'Desea proceder con la compra?',
       text: `Se le descontara $${total.toFixed(2)} de su cuenta`,
@@ -75,7 +75,7 @@ export function CartBasket ({ items, onItemRemove }) {
       <Box mt={2}>
         <Button
         isDisabled={total === 0}
-        onClick={handlerOrderClick}
+        onClick={handleOrderClick}
           colorScheme='blue'
           w={'100%'}
         >
