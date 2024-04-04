@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
 date_default_timezone_set("America/Puerto_Rico");
 require_once '../../../control.php';
 $school = mysql_fetch_object(mysql_query("SELECT `year` from colegio where usuario = 'administrador'"));
