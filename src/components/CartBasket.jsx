@@ -6,7 +6,7 @@ import { useShoppingCart } from '../hooks/useShoppingCart'
 import { useStudent } from '../hooks/useStudent'
 
 export function CartBasket ({ items, onItemRemove }) {
-  const { makeOrder } = useShoppingCart()
+  const { makeOrder, resetShoppingCart } = useShoppingCart()
   const { student } = useStudent()
   const total = items
     .reduce((sum, item) => {
@@ -30,6 +30,21 @@ export function CartBasket ({ items, onItemRemove }) {
           total,
           studentID: student.id
         })
+      }
+    })
+  }
+  const handleCancelOrder = () => {
+    Swal.fire({
+      title: 'Seguro que desea cancelar?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--chakra-colors-blue-500)',
+      confirmButtonText: 'Confirmar',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        resetShoppingCart({ withOrderMade: false })
       }
     })
   }
@@ -72,7 +87,7 @@ export function CartBasket ({ items, onItemRemove }) {
           <span className='font-bold'>${total.toFixed(2)}</span>
         </Text>
       </Box>
-      <Box mt={2}>
+      <VStack mt={4}>
         <Button
         isDisabled={total === 0}
         onClick={handleOrderClick}
@@ -81,7 +96,15 @@ export function CartBasket ({ items, onItemRemove }) {
         >
           Ordernar
         </Button>
-      </Box>
+        <Button
+          onClick={handleCancelOrder}
+          colorScheme='blue'
+          variant="outline"
+          w={'100%'}
+        >
+          Cancelar
+        </Button>
+      </VStack>
     </Box>
   )
 }
