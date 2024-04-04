@@ -13,10 +13,14 @@ export function useStudent () {
   const login = ({ barCode }) => {
     // 120113675
 
-    fetch(`${SCHOOLSOFT_STUDENTS_API_URL}?barcode=${barCode}`)
+    return fetch(`${SCHOOLSOFT_STUDENTS_API_URL}?barcode=${barCode}`)
       .then(data => data.json())
       .then(json => {
-        setStudent(json)
+        if (json !== null) {
+          setStudent(json)
+          return true
+        }
+        return false
       })
   }
 
