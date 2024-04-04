@@ -6,12 +6,14 @@ import { SCHOOLSOFT_PAYMENT_API_URL } from '../constants/school'
 export function useShoppingCart () {
   const { resetStudent } = useStudent()
   const { doneShopping, setDoneShopping } = useContext(ShoppingCartContext)
-  const resetShoppingCart = () => {
-    setDoneShopping(true)
+  const resetShoppingCart = ({ withOrderMade = true }) => {
+    if (withOrderMade) {
+      setDoneShopping(true)
+      setTimeout(() => {
+        setDoneShopping(false)
+      }, 5000)
+    }
     resetStudent()
-    setTimeout(() => {
-      setDoneShopping(false)
-    }, 5000)
   }
   const makeOrder = async ({ items, total, studentID }) => {
     fetch(SCHOOLSOFT_PAYMENT_API_URL, {
