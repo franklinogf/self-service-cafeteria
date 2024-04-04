@@ -3,14 +3,15 @@ import { CartItem } from './CartItem'
 import { IconBasket } from '@tabler/icons-react'
 import Swal from 'sweetalert2'
 import { useShoppingCart } from '../hooks/useShoppingCart'
+import { useStudent } from '../hooks/useStudent'
 
 export function CartBasket ({ items, onItemRemove }) {
-  const { resetShoppingCart } = useShoppingCart()
+  const { makeOrder } = useShoppingCart()
+  const { student } = useStudent()
   const total = items
     .reduce((sum, item) => {
       return sum + item.price
     }, 0)
-
   const handlerOrderClick = () => {
     Swal.fire({
       title: 'Desea proceder con la compra?',
@@ -23,7 +24,12 @@ export function CartBasket ({ items, onItemRemove }) {
       allowEscapeKey: false
     }).then((result) => {
       if (result.isConfirmed) {
-        resetShoppingCart()
+        const itemsOrdered = items.flatMap(({ id, price, label }) => [{ id, price, label }])
+        makeOrder({
+          items: itemsOrdered,
+          total,
+          studentID: student.id
+        })
       }
     })
   }
@@ -46,12 +52,12 @@ export function CartBasket ({ items, onItemRemove }) {
         mt={2}
         gap={0}
       >
-        {items.map(({ id, label, price }) => (
+        {items.map(({ label, price, listId }) => (
           <CartItem
-            key={id}
+            key={listId}
             label={label}
             price={price}
-            onRemove={() => onItemRemove(id)}
+            onRemove={() => onItemRemove(listId)}
           />
         ))}
       </VStack>
