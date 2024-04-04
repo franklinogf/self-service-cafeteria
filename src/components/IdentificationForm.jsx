@@ -46,6 +46,12 @@ export function IdentificationForm () {
     firstPinInput.current.focus()
   }
 
+  const handlePinCancel = () => {
+    resetStudent()
+    setPin('')
+    setError(false)
+  }
+
   return (
     <Center
       as='main'
@@ -141,7 +147,7 @@ export function IdentificationForm () {
             </CardBody>
             <CardFooter>
               <Button
-              onClick={() => resetStudent()}
+              onClick={handlePinCancel}
                 mx={'auto'}
                 colorScheme='gray'
               >
