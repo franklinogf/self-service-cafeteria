@@ -87,20 +87,23 @@ export function CartBasket ({ items, onItemRemove }) {
           <span className='font-bold'>${total.toFixed(2)}</span>
         </Text>
       </Box>
-      <VStack mt={4}>
+      <VStack gap={10} mt={4}>
         <Button
         isDisabled={total === 0}
+        size='lg'
         onClick={handleOrderClick}
           colorScheme='blue'
           w={'100%'}
         >
           Ordernar
         </Button>
+        <Spacer/>
         <Button
           onClick={handleCancelOrder}
           colorScheme='blue'
           variant="outline"
           w={'100%'}
+          size='sm'
         >
           Cancelar
         </Button>
