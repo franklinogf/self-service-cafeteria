@@ -15,13 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $result = mysql_fetch_object(mysql_query("SELECT * FROM `year` WHERE cbarra = '$barCode' AND `year` = '$year' limit 1"));
     if($result){
         $student = [
-            "id" => (int) $result->mt,
+            "id" => intval($result->mt),
             "name" => $result->nombre,
             "lastName" => utf8_encode($result->apellidos),
-            "depositAmount" => (float) $result->cantidad,
+            "depositAmount" => floatval($result->cantidad),
             "profilePictureUrl" => $result->tipo ? "../../picture/{$result->tipo}.jpg" : null,
             "pinCode" => $result->codigopin,
-            "hasDiscount" => strtolower($result->hde) === 'si'
+            "hasDiscount" => strtolower($result->hde) === 'si',
+            "grade" => $result->grado,
+            "gradeNumber" => intval(substr($result->grado,0,2))
         ];
     }
     
