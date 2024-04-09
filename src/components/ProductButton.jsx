@@ -24,7 +24,7 @@ export function ProductButton ({ label, imageUrl, price, onClick }) {
             />
 
             <Text flex={1} maxW={'150px'} fontSize={'sm'} color={'gray.500'} className='text-wrap'>{label}</Text>
-            <Text fontWeight={'bold'}>${price}</Text>
+            <Text fontWeight={'bold'}>${price.toFixed(2)}</Text>
         </Button>
   )
 }

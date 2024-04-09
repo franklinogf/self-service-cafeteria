@@ -17,7 +17,7 @@ export function CartItem ({ label, price, onRemove }) {
       >
         <span className='text-sm'>{label}</span>
         <Spacer />
-        <span className='font-semibold'>${price}</span>
+        <span className='font-semibold'>${price.toFixed(2)}</span>
       </Box>
       <IconButton
         size={'sm'}
