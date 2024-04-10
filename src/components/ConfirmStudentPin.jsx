@@ -85,6 +85,23 @@ export function ConfirmStudentPin () {
       setNewPin({ pin: '', confirmPin: '' })
     }
   }
+
+  const handleNewPinErase = () => {
+    if (newPin.confirmPin.length > 0) {
+      const str = newPin.confirmPin.slice(0, -1)
+      setNewPin({ ...newPin, confirmPin: str })
+    } else if (newPin.pin.length > 0) {
+      const str = newPin.pin.slice(0, -1)
+      setNewPin({ ...newPin, pin: str })
+    }
+  }
+  const handlePinErase = () => {
+    if (pin.length > 0) {
+      const str = pin.slice(0, -1)
+      setPin(str)
+    }
+  }
+
   return (
     <Card size={'sm'} w={[600]}>
       <CardHeader>
@@ -136,7 +153,7 @@ export function ConfirmStudentPin () {
          )}
           </>
           )}
-          {(student.pinCode !== '' || adminConfirmed) && <NumbersPad onNumberPress={adminConfirmed ? handleNewPinNumberClick : handleNumberClick}/>}
+          {(student.pinCode !== '' || adminConfirmed) && <NumbersPad onErase={adminConfirmed ? handleNewPinErase : handlePinErase} onNumberPress={adminConfirmed ? handleNewPinNumberClick : handleNumberClick}/>}
           {adminConfirmed && <Button onClick={handleNewPinSave} colorScheme='green'>Guardar</Button>}
           <Button onClick={handleCancel}>
               Cancelar
