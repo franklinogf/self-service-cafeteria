@@ -35,7 +35,7 @@ export function ConfirmStudentPin () {
     }
   }
 
-  const handlePinCancel = () => {
+  const handleCancel = () => {
     resetStudent()
   }
   const handleNumberClick = (number) => {
@@ -136,8 +136,11 @@ export function ConfirmStudentPin () {
          )}
           </>
           )}
-          {(student.pinCode !== '' || adminConfirmed) && <NumbersPad onCancel={handlePinCancel} onNumberPress={adminConfirmed ? handleNewPinNumberClick : handleNumberClick}/>}
+          {(student.pinCode !== '' || adminConfirmed) && <NumbersPad onNumberPress={adminConfirmed ? handleNewPinNumberClick : handleNumberClick}/>}
           {adminConfirmed && <Button onClick={handleNewPinSave} colorScheme='green'>Guardar</Button>}
+          <Button onClick={handleCancel}>
+              Cancelar
+            </Button>
         </Center>
       </CardBody>
     </Card>
