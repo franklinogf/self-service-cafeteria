@@ -10,7 +10,7 @@ export function useStudent () {
     setPinConfirmed(false)
   }
 
-  const login = ({ barCode }) => {
+  const login = async ({ barCode }) => {
     // 120113675
 
     return fetch(`${SCHOOLSOFT_STUDENTS_API_URL}?barcode=${barCode}`)
@@ -22,6 +22,22 @@ export function useStudent () {
         }
         return false
       })
+  }
+
+  const createNewPin = async ({ pinCode }) => {
+    const data = {
+      pinCode,
+      id: student.id
+    }
+    return fetch(SCHOOLSOFT_STUDENTS_API_URL, { method: 'POST', body: JSON.stringify(data) })
+      .then(data => data.json())
+      .then(json => {
+        if (json !== null) {
+          setStudent(json)
+          return true
+        }
+        return false
+      }).catch(error => console.log({ error }))
   }
 
   const confirmPin = ({ pinCode }) => {
@@ -38,6 +54,7 @@ export function useStudent () {
     login,
     resetStudent,
     pinConfirmed,
-    confirmPin
+    confirmPin,
+    createNewPin
   }
 }

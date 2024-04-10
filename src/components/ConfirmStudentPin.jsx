@@ -1,31 +1,32 @@
 import {
   Card,
-  HStack,
-  PinInput,
-  PinInputField,
   Text,
   Image,
   Heading,
   CardHeader,
   CardBody,
-  FormControl,
   Center,
-  FormErrorMessage,
-  Button,
-  Grid,
-  GridItem
+  Button
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { useStudent } from '../hooks/useStudent'
-const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+import { NumbersPad } from './NumbersPad'
+import { InputsPin } from './InputsPin'
+import { AdminLogin } from './AdminLogin'
+
 export function ConfirmStudentPin () {
-  const { student, confirmPin, resetStudent } = useStudent()
+  const { student, confirmPin, resetStudent, createNewPin } = useStudent()
   const [pin, setPin] = useState('')
+  const [newPin, setNewPin] = useState({ pin: '', confirmPin: '' })
+  const [newPinError, setNewPinError] = useState(false)
   const firstPinInput = useRef()
   const [error, setError] = useState(false)
+  const [value, setValue] = useState('')
+  const [adminError, setAdminError] = useState(false)
+  const [loginError, setLoginError] = useState(false)
+  const [adminConfirmed, setAdminConfirmed] = useState(false)
 
   const handlePinComplete = (pinCode) => {
-    console.log(pin)
     const confirmed = confirmPin({ pinCode })
     if (!confirmed) {
       setError(true)
@@ -39,18 +40,67 @@ export function ConfirmStudentPin () {
   }
   const handleNumberClick = (number) => {
     const newPin = pin.concat(number)
-    console.log({ newPin })
     setPin(newPin)
     if (newPin.length === 4) {
       handlePinComplete(newPin)
     }
   }
+  const handleNewPinNumberClick = (number) => {
+    if (newPin.pin.length < 4) {
+      const pin = newPin.pin.concat(number)
+      setNewPin({ confirmPin: '', pin })
+    } else {
+      const confirmPin = newPin.confirmPin.concat(number)
+      setNewPin({ ...newPin, confirmPin })
+    }
+  }
+  const handleNewPinChange = (name) => (value) => {
+    setNewPin({ [name]: value })
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoginError(false)
+    const form = new FormData(e.target)
+    const barCode = form.get('barCode')
+    if (barCode === '') {
+      setAdminError(true)
+      return
+    }
+    if (barCode === '12345678') {
+      setAdminConfirmed(true)
+      setLoginError(false)
+      setAdminError(false)
+      return
+    }
+    setLoginError(true)
+  }
 
+  const handleNewPinSave = async () => {
+    if (newPin.pin === newPin.confirmPin) {
+      setNewPinError(false)
+      setAdminConfirmed(false)
+      await createNewPin({ pinCode: newPin.pin })
+    } else {
+      setNewPinError(true)
+      setNewPin({ pin: '', confirmPin: '' })
+    }
+  }
   return (
     <Card size={'sm'} w={[600]}>
       <CardHeader>
         <Heading textAlign={'center'} as="h1">
-          Entra tu pin
+          {student.pinCode !== ''
+            ? 'Entra tu pin'
+            : (
+                adminConfirmed
+                  ? 'Crea tu pin'
+                  : (
+                  <div className='grid'>
+              No tiene un pin creado
+              <span className='text-sm text-red-400'>Por favor contacta a un administrador para que puedas crear tu pin</span>
+            </div>
+                    )
+              )}
         </Heading>
       </CardHeader>
       <CardBody>
@@ -67,40 +117,27 @@ export function ConfirmStudentPin () {
           />
         )}
         <Center flexDirection={'column'} gap={5}>
-          <section>
-            <FormControl justifyItems='center' isInvalid={error}>
-            <Center flexDirection={'column'} gap={0}>
-              <HStack>
-                <PinInput
-                  value={pin}
-                  onChange={setPin}
-                  mask
-                  autoFocus
-                  otp
-                  onComplete={handlePinComplete}
-                >
-                  <PinInputField ref={firstPinInput} />
-                  <PinInputField />
-                  <PinInputField />
-                  <PinInputField />
-                </PinInput>
-              </HStack>
-              <FormErrorMessage mt={0}>Pin incorrecto</FormErrorMessage>
-              </Center>
-            </FormControl>
-          </section>
-          <Grid templateColumns="repeat(3,1fr)" justifyContent="center" gap={1}>
-            {numbers.map((number) => (
-              <GridItem key={number}>
-                <Button onClick={() => { handleNumberClick(number) }} colorScheme="blue">{number}</Button>
-              </GridItem>
-            ))}
-            <GridItem colSpan={2}>
-              <Button onClick={handlePinCancel}>
-                Cancelar
-              </Button>
-            </GridItem>
-          </Grid>
+          {student.pinCode !== '' && <InputsPin autoFocus error={error} pin={pin} firstInputRef={firstPinInput} onPinChange={setPin} onComplete={handlePinComplete} /> }
+          {student.pinCode === '' && !adminConfirmed && <AdminLogin value={value} onValueChange={setValue} onSubmit={handleSubmit} error={adminError} loginError={loginError} />}
+          {(student.pinCode === '' && adminConfirmed) && (
+          <>
+          <div>
+          <span className='font-semibold'>Nuevo pin</span>
+          <InputsPin autoFocus pin={newPin.pin} onPinChange={handleNewPinChange('pin')}/>
+          </div>
+         <div>
+         <span className='font-semibold'>Confirmar pin</span>
+          <InputsPin pin={newPin.confirmPin} onPinChange={handleNewPinChange('confirmPin')}/>
+         </div>
+         {newPinError && (
+          <div>
+            <span className='font-semibold text-red-500'>No coinciden</span>
+          </div>
+         )}
+          </>
+          )}
+          {(student.pinCode !== '' || adminConfirmed) && <NumbersPad onCancel={handlePinCancel} onNumberPress={adminConfirmed ? handleNewPinNumberClick : handleNumberClick}/>}
+          {adminConfirmed && <Button onClick={handleNewPinSave} colorScheme='green'>Guardar</Button>}
         </Center>
       </CardBody>
     </Card>
