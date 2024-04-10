@@ -4,28 +4,7 @@ import {
   Input,
   Button
 } from '@chakra-ui/react'
-// import { useState } from 'react'
 export function AdminLogin ({ value, onValueChange, onSubmit, error, loginError }) {
-//   const [value, setValue] = useState('')
-  //   const [error, setError] = useState(false)
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault()
-  //     setLoginError(false)
-  //     const form = new FormData(e.target)
-  //     const barCode = form.get('barCode')
-  //     if (barCode === '') {
-  //       setError(true)
-  //       return
-  //     }
-  //     if (barCode === '12345678') {
-  //       setLoginError(false)
-  //       setError(false)
-  //       return
-  //     }
-  //     setLoginError(true)
-  //   }
-
   return (
        <form className="space-y-2" onSubmit={onSubmit}>
             <FormControl isInvalid={error || loginError}>
@@ -34,7 +13,7 @@ export function AdminLogin ({ value, onValueChange, onSubmit, error, loginError 
                 autoComplete="off"
                 name="barCode"
                 variant={'filled'}
-                type="number"
+                type="password"
                 value={value}
                 onChange={(e) => onValueChange(e.target.value)}
               />
