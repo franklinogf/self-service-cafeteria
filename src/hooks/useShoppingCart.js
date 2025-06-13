@@ -6,7 +6,7 @@ import { SCHOOLSOFT_PAYMENT_API_URL } from '../constants/school'
 export function useShoppingCart () {
   const { resetStudent } = useStudent()
   const { doneShopping, setDoneShopping } = useContext(ShoppingCartContext)
-  const resetShoppingCart = ({ withOrderMade = true }) => {
+  const resetShoppingCart = ({ withOrderMade = true } = {}) => {
     if (withOrderMade) {
       setDoneShopping(true)
       setTimeout(() => {
@@ -20,7 +20,7 @@ export function useShoppingCart () {
       method: 'POST',
       body: JSON.stringify({ items, total, studentID })
     })
-      .then(resetShoppingCart())
+      .then(() => { resetShoppingCart() })
   }
   return { resetShoppingCart, doneShopping, setDoneShopping, makeOrder }
 }

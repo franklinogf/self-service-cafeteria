@@ -13,6 +13,7 @@ import { useStudent } from '../hooks/useStudent'
 import { NumbersPad } from './NumbersPad'
 import { InputsPin } from './InputsPin'
 import { AdminLogin } from './AdminLogin'
+import { SCHOOLSOFT_ADMIN_API_URL } from '../constants/school'
 
 export function ConfirmStudentPin () {
   const { student, confirmPin, resetStudent, createNewPin } = useStudent()
@@ -66,7 +67,9 @@ export function ConfirmStudentPin () {
       setAdminError(true)
       return
     }
-    if (barCode === '12345678') {
+    const response = await fetch(SCHOOLSOFT_ADMIN_API_URL)
+    const admin = await response.json()
+    if (barCode === admin.pinCode) {
       setAdminConfirmed(true)
       setLoginError(false)
       setAdminError(false)
