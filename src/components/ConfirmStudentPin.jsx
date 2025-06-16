@@ -109,7 +109,7 @@ export function ConfirmStudentPin () {
     <Card size={'sm'} w={[600]}>
       <CardHeader>
         <Heading textAlign={'center'} as="h1">
-          {student.pinCode !== ''
+          {student.pinCode
             ? 'Entra tu pin'
             : (
                 adminConfirmed
@@ -125,7 +125,7 @@ export function ConfirmStudentPin () {
       </CardHeader>
       <CardBody>
         <Text textAlign={'center'} fontSize={'lg'} opacity={0.7}>
-          {student.name}
+          {`${student.name} ${student.lastName}`}
         </Text>
         {student.profilePictureUrl && (
           <Image
